@@ -1,0 +1,37 @@
+extracted_content_ml-latest/
+ml-latest-small/
+
+*.csv
+dataframe_v1.txt
+dataframe_v11.txt
+FinalVersion.txt
+cleanData.txt
+halfcleanData.txt
+MLP-20M/
+movie-metadata.npy
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf

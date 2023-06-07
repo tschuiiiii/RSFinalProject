@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% block title %}
+Movie details
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- title -->
+    <div class="col-12">
+        <h1 class="details__title">{{movie.title}}</h1>
+    </div>
+    <!-- end title -->
+
+    <!-- content -->
+    <div class="col-10">
+        <div class="card card--details card--series">
+            <div class="row">
+                <!-- card cover -->
+                <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+                    <div class="card__cover">
+                        <img src="{% url 'project_test:poster' movie.id %}" alt="movie.title">
+                    </div>
+                </div>
+                <!-- end card cover -->
+
+                <!-- card content -->
+                <div class="col-12 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+                    <div class="card__content">
+                        <div class="card__wrap">
+                            {% if movie.avgRating != 0 %}
+                            <span class="card__rate"><i class="icon ion-ios-star"></i>{{movie.avgRating}}</span>
+                            {% endif %}
+
+                            <ul class="card__list">
+                                {% if movie.releaseYear != "" %}
+                                <li>{{movie.releaseYear}}</li>
+                                {% endif %}
+                                {% if movie.runtimeHours != 0 and movie.runtimeMinutes != 0 %}
+                                <li>{{movie.runtimeHours}} h {{movie.runtimeMinutes}} min</li>
+                                {% endif %}
+                                {% if movie.adult == True %}
+                                <li>18+</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+
+                        <ul class="card__meta">
+                            <li><span>Genre:</span>
+                                {% if movie.genres == ""%}
+                                <span>-</span>
+                                {% else %}
+                                {% for genre in movie.genres %}
+                                <span class="style-as-a">{{genre}}</span>
+                                {% endfor %}
+                                {% endif %}
+                            </li>
+                            <li><span>Language:</span>
+                                {% if movie.languages == "" %}
+                                <span> - </span>
+                                {% else %}
+                                {{movie.languages}}
+                                {% endif %}
+                            </li>
+                            <li><span>Country:</span>
+                                {% if movie.country == "" %}
+                                <span> - </span>
+                                {% else %}
+                                {{movie.country}}
+                                {% endif %}
+                            </li>
+                            <li><span>Cast:</span>
+                                {% if movie.cast == "" %}
+                                <span> - </span>
+                                {% else %}
+                                {{movie.cast}}
+                                {% endif %}
+                            </li>
+                            <li><span>Director:</span>
+                                {% if movie.directors == "" %}
+                                <span> - </span>
+                                {% else %}
+                                {{movie.directors}}
+                                {% endif %}
+                            </li>
+                        </ul>
+
+                        <div class="card__description card__description--details">
+                            {{movie.plotSummary}}
+                        </div>
+                    </div>
+                </div>
+                <!-- end card content -->
+            </div>
+        </div>
+    </div>
+    <!-- end content -->
+</div>
+{% endblock %}
+
+{% block moredetails %}
+<!-- content -->
+<section class="content">
+    <div class="content__head">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+
+                    <!-- content tabs nav -->
+                    <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1"
+                               aria-selected="true">Recommendations</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2"
+                               aria-selected="false">Reviews</a>
+                        </li>
+                    </ul>
+                    <!-- end content tabs nav -->
+
+                    <!-- content mobile tabs nav -->
+                    <div class="content__mobile-tabs" id="content__mobile-tabs">
+                        <div class="content__mobile-tabs-btn dropdown-toggle" role="navigation" id="mobile-tabs"
+                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <input type="button" value="Recommendations">
+                            <span></span>
+                        </div>
+
+                        <div class="content__mobile-tabs-menu dropdown-menu" aria-labelledby="mobile-tabs">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item"><a class="nav-link active" id="1-tab" data-toggle="tab"
+                                                        href="#tab-1" role="tab" aria-controls="tab-1"
+                                                        aria-selected="true">Recommendations</a></li>
+
+                                <li class="nav-item"><a class="nav-link" id="2-tab" data-toggle="tab" href="#tab-2"
+                                                        role="tab" aria-controls="tab-2"
+                                                        aria-selected="false">Reviews</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end content mobile tabs nav -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-12 col-xl-12">
+                <!-- content tabs -->
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+                        <div class="row">
+                            <!-- comments -->
+                            <!-- section title -->
+                            <div class="col-12">
+                                <h2 class="section__title">Recommendation List #1</h2>
+                            </div>
+                            <!-- end section title -->
+
+                            <!-- card -->
+                            <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+                                <div class="card">
+                                    <div class="card__cover">
+                                        <img src="img/covers/cover.jpg" alt="">
+                                        <a href="#" class="card__play">
+                                            <i class="icon ion-ios-play"></i>
+                                        </a>
+                                    </div>
+                                    <div class="card__content">
+                                        <h3 class="card__title"><a href="#">I Dream in Another Language</a></h3>
+                                        <span class="card__category">
+                                            <a href="#">Action</a>
+                                            <a href="#">Triler</a>
+                                        </span>
+                                        <span class="card__rate"><i class="icon ion-ios-star"></i>8.4</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end card -->
+
+                            <!-- card -->
+                            <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+                                <div class="card">
+                                    <div class="card__cover">
+                                        <img src="img/covers/cover3.jpg" alt="">
+                                        <a href="#" class="card__play">
+                                            <i class="icon ion-ios-play"></i>
+                                        </a>
+                                    </div>
+                                    <div class="card__content">
+                                        <h3 class="card__title"><a href="#">Benched</a></h3>
+                                        <span class="card__category">
+                                            <a href="#">Comedy</a>
+                                        </span>
+                                        <span class="card__rate"><i class="icon ion-ios-star"></i>7.1</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end card -->
+
+                            <!-- card -->
+                            <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+                                <div class="card">
+                                    <div class="card__cover">
+                                        <img src="img/covers/cover2.jpg" alt="">
+                                        <a href="#" class="card__play">
+                                            <i class="icon ion-ios-play"></i>
+                                        </a>
+                                    </div>
+                                    <div class="card__content">
+                                        <h3 class="card__title"><a href="#">Whitney</a></h3>
+                                        <span class="card__category">
+                                            <a href="#">Romance</a>
+                                            <a href="#">Drama</a>
+                                            <a href="#">Music</a>
+                                        </span>
+                                        <span class="card__rate"><i class="icon ion-ios-star"></i>6.3</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end card -->
+
+                            <!-- card -->
+                            <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+                                <div class="card">
+                                    <div class="card__cover">
+                                        <img src="img/covers/cover6.jpg" alt="">
+                                        <a href="#" class="card__play">
+                                            <i class="icon ion-ios-play"></i>
+                                        </a>
+                                    </div>
+                                    <div class="card__content">
+                                        <h3 class="card__title"><a href="#">Blindspotting</a></h3>
+                                        <span class="card__category">
+                                            <a href="#">Comedy</a>
+                                            <a href="#">Drama</a>
+                                        </span>
+                                        <span class="card__rate"><i class="icon ion-ios-star"></i>7.9</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end card -->
+
+                            <!-- card -->
+                            <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+                                <div class="card">
+                                    <div class="card__cover">
+                                        <img src="img/covers/cover4.jpg" alt="">
+                                        <a href="#" class="card__play">
+                                            <i class="icon ion-ios-play"></i>
+                                        </a>
+                                    </div>
+                                    <div class="card__content">
+                                        <h3 class="card__title"><a href="#">I Dream in Another Language</a></h3>
+                                        <span class="card__category">
+                                            <a href="#">Action</a>
+                                            <a href="#">Triler</a>
+                                        </span>
+                                        <span class="card__rate"><i class="icon ion-ios-star"></i>8.4</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end card -->
+                            <!-- end comments -->
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab">
+                        <div class="row">
+                            <!-- reviews -->
+                            <div class="col-12">
+                                <div class="reviews">
+                                    <ul class="reviews__list">
+                                        {% for review in movie.reviews %}
+                                        <li class="reviews__item">
+                                            <div class="comments__actions">
+                                                <div class="comments__rate">
+                                                    <!--														<button><i class="icon ion-ios-chatbubbles"></i>8</button>-->
+                                                    <span><i class="icon ion-ios-chatbubbles"></i>Review #{{forloop.counter}}</span>
+                                                </div>
+                                            </div>
+                                            <p class="reviews__text">{{review}}</p>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- end reviews -->
+                        </div>
+                    </div>
+                </div>
+                <!-- end content tabs -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end content -->
+{% endblock %}

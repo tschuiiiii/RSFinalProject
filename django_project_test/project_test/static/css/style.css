@@ -1,0 +1,163 @@
+/* ------------------------ */
+/* ----- welcome page ----- */
+/* ------------------------ */
+.home {
+    margin-top: 0 !important;
+    padding-top: 30px !important;
+    padding-bottom: 0px !important;
+}
+
+/* header */
+.header__content {
+    height: 50px;
+    justify-content: normal;
+}
+
+.header__logo {
+    background: transparent;
+    width: 60px;
+}
+
+.header__logo img {
+    max-width: 40px;
+}
+
+.header__nav {
+    margin-left: 5px;
+}
+
+.logo__text {
+    color: white;
+    margin: 5px;
+    text-transform: uppercase;
+    font-weight: lighter;
+}
+
+/* search bar - start */
+.search-bar {
+    padding: 80px 50px 55px 50px;
+}
+.search-bar label {
+    margin-bottom: 0;
+}
+.search-bar label svg {
+    color: #ff5680;
+}
+/* search bar - end */
+
+/* search result list - start */
+.aa-Panel {
+    z-index: 5;
+}
+
+.search-img {
+    height: 80px;
+    border-radius: 5px;
+    float: left;
+}
+
+.search-movie-title, .search-movie-genres, .search-movie-avgRating {
+    margin-left: 70px;
+    line-height: 25px;
+}
+
+.search-movie-title {
+    font-size: larger;
+}
+
+.search-movie-genres {
+    font-size: smaller;
+    font-weight: lighter;
+}
+
+.search-movie-avgRating {
+    margin-top: 5px;
+}
+
+.search-movie-avgRating > span {
+    font-size: smaller;
+    vertical-align: bottom;
+    padding-left: 5px;
+}
+/* search result list - end */
+
+/* card design - start */
+.card {
+    background-color: transparent;
+    border: 0px;
+}
+
+.card__cover:hover {
+    cursor: pointer;
+}
+
+.card__category > span.style-as-a, .card__meta > li > span.style-as-a {
+    font-size: 14px;
+    position: relative;
+    background-image: -webkit-linear-gradient(0deg, #ff55a5 0%, #ff5860 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #ff5860;
+    margin-right: 7px;
+    opacity: 0.8;
+    font-family: 'Open Sans', sans-serif;
+}
+.card__category > span.style-as-a:not(:last-child):after, .card__meta > li > span.style-as-a:not(:last-child):after {
+    content: ', ';
+    position: absolute;
+    display: block;
+    left: 100%;
+    top: 0;
+    background-image: -webkit-linear-gradient(0deg, #ff55a5 0%, #ff5860 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #ff5860;
+}
+
+.card img, .card__cover:hover:before {
+    border-radius: 5px;
+}
+/* card design - end */
+
+/* ------------------------ */
+/* ----- details page ----- */
+/* ------------------------ */
+
+.details__title {
+    margin-top: 50px;
+}
+
+.card__meta > li > span {
+    font-weight: bold;
+}
+
+/* review style */
+.reviews__text {
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.comments__rate span {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  margin-right: 25px;
+  position: relative;
+  height: 30px;
+}
+.comments__rate span i {
+  font-size: 18px;
+  opacity: 0.5;
+  -webkit-transition: 0.4s ease;
+  -moz-transition: 0.4s ease;
+  transition: 0.4s ease;
+}
+.comments__rate span:last-child {
+  margin-right: 0;
+}
+.comments__rate span:first-child i {
+  margin-right: 6px;
+  color: #ff5680;
+}
