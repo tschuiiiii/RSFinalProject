@@ -6,6 +6,8 @@ Welcome page
 {% endblock %}
 
 {% block content %}
+
+
 <div id="autocomplete" class="search-bar"></div>
 
 <div class="row">
@@ -20,7 +22,8 @@ Welcome page
     <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
         <div class="card" onclick="window.location.href='/project_test/similarmovies/{{random_movie.id}}'">
             <div class="card__cover">
-                <img src="{% url 'project_test:poster' random_movie.id %}">
+                <img class="poster-loader" src="{% url 'project_test:poster' random_movie.id %}" alt="{{random_movie.title}}">
+<!--                <img class="poster-loader" src="" alt="{{random_movie.title}}" width="250">-->
             </div>
             <div class="card__content">
                 <h3 class="card__title"><a href="#">{{ random_movie.title }}</a></h3>

@@ -25,7 +25,7 @@ class Funtion4:
         matrix = tfidf.fit_transform(self.data['reviews'])
         
         file_name = "funtion4.pickle"
-        path = 'similarity/'+file_name
+        path = 'project_test/similarity/'+file_name
         
         if os.path.exists(path):
             with open(path, 'rb') as handle:

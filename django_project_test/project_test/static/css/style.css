@@ -87,6 +87,11 @@
     border: 0px;
 }
 
+.card__cover {
+    background: url('../../static/media/loading-spinner.gif') center no-repeat;
+    min-height: 120px;
+}
+
 .card__cover:hover {
     cursor: pointer;
 }

@@ -25,7 +25,7 @@ class Funtion5:
         matrix = tfidf.fit_transform(self.data['combine'].values.astype('U'))
         
         file_name = "funtion5.pickle"
-        path = 'similarity/'+file_name
+        path = 'project_test/similarity/'+file_name
         
         if os.path.exists(path):
             with open(path, 'rb') as handle:

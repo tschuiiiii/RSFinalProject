@@ -5,7 +5,7 @@ from os.path import exists
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from . import movie_metadata
-#from Main import Main
+from .Main import Main
 
 import re
 import requests
@@ -17,6 +17,7 @@ def index(request):
     good_rated_movies = []
 
     for movie_object in movie_metadata.metadata:
+    #for movie_object in movie_metadata.movies_df:
         movie = movie_object['movielens']
         movie_id = movie_object['movielensId']
 
@@ -110,7 +111,20 @@ def poster(request, movie_id):
 
 
 def similarmovies(request, movie_id):
-    movie_title = ""
+    movie_title = movie_metadata.movies_df[movie_metadata.movies_df['movieId'] == movie_id]['title'].values[0]
+
+    main_obj = Main()
+    results = main_obj.title(movie_title)
+    #recom = obj.title("Men in Black (a.k.a. MIB) (1997)")
+
+    # {movieId : {title, genres, avgRating, numRatings}}
+    result_dict = {}
+
+    for result_key, result_titles in results.items():
+        result_dict[result_key] = {}
+        for title in result_titles:
+            result_mid = int(movie_metadata.movies_df[movie_metadata.movies_df['title'] == title]['movieId'].values[0])
+            result_dict[result_key][result_mid] = {'title': title}
 
     for movie_object in movie_metadata.metadata:
         if movie_object['movielensId'] == movie_id:
@@ -134,10 +148,32 @@ def similarmovies(request, movie_id):
                 'title': movie['title']
             }
 
+        for key, value_dict in result_dict.items():
+            if movie_object['movielensId'] in value_dict:
+                movie = movie_object['movielens']
+
+                value_dict[movie_object['movielensId']].update({
+                    'genres': movie['genres'],
+                    'avgRating': round(movie['avgRating'], 1),
+                    'numRatings': movie['numRatings']
+                })
+
+
+        # elif movie_object['movielensId'] in result_dict:
+        #     movie = movie_object['movielens']
+        #
+        #     result_dict[movie_object['movielensId']].update({
+        #         'genres' : movie['genres'],
+        #         'avgRating' : round(movie['avgRating'], 1),
+        #         'numRatings' : movie['numRatings']
+        #     })
+
+
     return render(
         request,
         "details.html",
         {
-            'movie': movie_details
+            'movie': movie_details,
+            'result_dict': result_dict
         }
     )

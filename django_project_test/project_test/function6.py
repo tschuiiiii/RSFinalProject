@@ -23,7 +23,7 @@ class Funtion6:
         matrix = cont_vect.fit_transform(self.data['reviews'])
         
         file_name = "funtion6.pickle"
-        path = 'similarity/'+file_name
+        path = 'project_test/similarity/'+file_name
         
         if os.path.exists(path):
             with open(path, 'rb') as handle:
