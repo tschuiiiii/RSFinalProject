@@ -13,7 +13,7 @@ Welcome page
 <div class="row">
     <!-- section title -->
     <div class="col-12">
-        <h2 class="section__title">Top rated movies</h2>
+        <h2 class="section__title">{{welcome_recomm_title}} <a class="header-a" href="/project_test/personal"><i class="icon ion-ios-settings"></i></a></h2>
     </div>
     <!-- end section title -->
 
@@ -28,9 +28,10 @@ Welcome page
             <div class="card__content">
                 <h3 class="card__title"><a href="#">{{ random_movie.title }}</a></h3>
                 <span class="card__category">
-                        {% for genre in random_movie.genres %}
-                        <span class="style-as-a">{{genre}}</span>
-                        {% endfor %}
+<!--                        {% for genre in random_movie.genres %}-->
+<!--                        <span class="style-as-a">{{genre}}</span>-->
+<!--                        {% endfor %}-->
+                    <span class="style-as-a">{{random_movie.genres}}</span>
                 </span>
                 <span class="card__rate"><i class="icon ion-ios-star"></i>{{random_movie.avgRating}}</span>
             </div>
@@ -44,7 +45,6 @@ Welcome page
 
 {% block sitescripts %}
 
-{% load static %}
 <script src="{% static '/js/autocomplete.js' %}" type="text/javascript"></script>
 
 {% endblock %}

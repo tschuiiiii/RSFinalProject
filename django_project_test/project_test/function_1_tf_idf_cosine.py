@@ -14,72 +14,73 @@ import os
 import pickle
 
 
+
 # load datasets function
 class Funtion1:
-
+    
     def __init__(self, data):
         self.data = data
-
-    def tf_idf(self):
-
+    
+    
+            
+    def Simfunction(self):
+        
+        
         tfidf = TfidfVectorizer(stop_words='english')
         matrix = tfidf.fit_transform(self.data['summary'])
-
+        
         file_name = "funtion1.pickle"
-        path = 'project_test/similarity/' + file_name
-
+        path = 'similarity/'+file_name
+       
         if os.path.exists(path):
             with open(path, 'rb') as handle:
-                self.sim_dic = pickle.load(handle)
-
+                temp2Dic = pickle.load(handle)
+                return temp2Dic
+              
         else:
-            print("all")
+            
             cosine_sim = cosine_similarity(matrix, matrix)
             tempDict = dict()
             for i in range(len(cosine_sim)):
                 arry = cosine_sim[i]
                 topValues = list(np.argpartition(arry, -6)[-6:])
                 tempDict[i] = topValues
-
-            self.sim_dic = tempDict
+           
+                if i in topValues:
+                    topValues.remove(i)
+            
+            titletoIndexDic = dict(zip(self.data.title, self.data.index))
+            
+            index_to_titleDic = dict(zip(self.data.index, self.data.title))
+            
+            titleText = self.data['title']
+            
+            temp2Dic = dict()
+            
+            for i, title in titleText.items():
+                
+                index = titletoIndexDic[title]
+                
+                moviesIndex = tempDict[index]
+                temp3 = list()
+                for k in moviesIndex:
+                    temp3.append(index_to_titleDic[k])
+                temp2Dic[title] = temp3
+            
             with open(path, 'wb') as handle:
-                pickle.dump(tempDict, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-        return self.sim_dic
-
+                pickle.dump(temp2Dic, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            
+               
+        return temp2Dic
+            
+     
     def recommendations(self, title):
-        sim_dic = self.tf_idf()
-
-        # todo: KeyError see 'alaskaLand (2013)' - id = 110284
-        # todo: KeyError see 'Asphalt Playground (La cité rose) (2012)' - id = 110108
-        # todo: KeyError see 'A Prayer for Rain (2013)' - id = 143565
-        # todo: KeyError see 'Extraordinary Mission (2017)' - id = 173897
-        # todo: KeyError see 'The Rolling Stones - Havana Moon (2016)' - id = 169790
-        # todo: KeyError see 'Carriage to Vienna (1966)' - id = 126947
-        # todo: KeyError see 'The Spider Labyrinth (1988)' - id = 175845
-        # todo: KeyError see 'Koumiko Mystery, The (Mystère Koumiko, Le) (1967' - id = 114631
-        titleDic = dict(zip(self.data.title, self.data.index))
-
-        index_to_titleDic = dict(zip(self.data.index, self.data.title))
-
-        titleIndex = titleDic[title]
-        indexOfRecommendedMovies = sim_dic[titleIndex]
-
-        if titleIndex in indexOfRecommendedMovies:
-            indexOfRecommendedMovies.remove(titleIndex)
-        else:
-            indexOfRecommendedMovies = indexOfRecommendedMovies[:5]
-
-        list_of_recommendations = list()
-
-        for index in indexOfRecommendedMovies:
-            list_of_recommendations.append(index_to_titleDic[index])
-        return list_of_recommendations
+        titlePointtoSimiMoviesDic = self.Simfunction()
+        return titlePointtoSimiMoviesDic[title]
+        
 
 
-#data = pd.read_csv("project_test/cleanData.txt", sep="\t")
-# data passed to save times
-#obj = Funtion1(data)
-#recomm = obj.recommendations("Toy Story (1995)")
 
-# remove the english stoping words like an, is, the, etc.
+
+
+

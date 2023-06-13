@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-b^e_#9vg&zmgq*1qmupb@j*yo8jt8ni#d8d+r$th+1v8$jnby$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['movies.sussitz.cc', '127.0.0.1']
 
 
 # Application definition
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap5',
-    'project_test'
+    'project_test.apps.ProjectTestConfig'
 ]
 
 MIDDLEWARE = [

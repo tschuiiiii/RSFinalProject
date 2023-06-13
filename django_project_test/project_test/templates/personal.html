@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Personal genre preferences
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="sign__content">
+            <!-- authorization form -->
+            <form action="{% url 'project_test:change-preferences' %}" method="POST" class="sign__form">{% csrf_token %}
+                <p class="personal-title">Please select you personal genre preferences...</p>
+
+                {% for genre, checked in genres.items %}
+                <div class="sign__group sign__group--checkbox">
+                    <input id="{{genre}}" name="genre" type="checkbox" value="{{genre}}" {% if checked %} checked="checked" {% endif %}>
+                    <label for="{{genre}}">{{genre}}</label>
+                </div>
+                {% endfor %}
+
+                <button class="sign__btn" type="submit">Save changes</button>
+            </form>
+            <!-- end authorization form -->
+        </div>
+    </div>
+</div>
+{% endblock %}

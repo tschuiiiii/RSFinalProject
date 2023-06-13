@@ -3,33 +3,60 @@ import random
 from os.path import exists
 
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from . import movie_metadata
-from .Main import Main
+from .WebsiteRecommendations import recommendations
 
 import re
 import requests
-import csv
 
 
 # Create your views here.
 def index(request):
     good_rated_movies = []
+    cookies_set = {}
+    cookies_empty = True
 
-    for movie_object in movie_metadata.metadata:
-    #for movie_object in movie_metadata.movies_df:
-        movie = movie_object['movielens']
-        movie_id = movie_object['movielensId']
+    if 'genres' in request.COOKIES:
+        cleaned_cookies = re.sub(r"['\[\]\s+]", "", request.COOKIES['genres'])
+        if cleaned_cookies == "":
+            welcome_recomm_title = "Top rated movies"
+        else:
+            cookies_set = set((cleaned_cookies).split(","))
+            cookies_empty = False
+            welcome_recomm_title = "Prefered genres"
+    else:
+        return redirect(
+        '/project_test/personal'
+    )
 
-        if movie['avgRating'] >= 4:
+    for movie_object in movie_metadata.movies_df.iterrows():
+        movie = movie_object[1]
+        movie_id = movie['Id']
 
-            good_rated_movies.append({
-                'id': movie_id,
-                'title': movie['title'],
-                'genres': movie['genres'],
-                'avgRating': round(movie['avgRating'], 1),
-                'numRatings': movie['numRatings']
-            })
+        genres_set = set(movie['genres'].split("|"))
+
+        if not cookies_empty and len(cookies_set.intersection(genres_set)) > 0:
+            if movie['rating'] >= 4:
+
+                movie_genres = movie['genres'].replace("|", ", ")
+
+                good_rated_movies.append({
+                    'id': movie_id,
+                    'title': movie['title'],
+                    'genres': movie_genres,
+                    'avgRating': round(movie['rating'], 1)
+                })
+        elif cookies_empty:
+            if movie['rating'] >= 4:
+                movie_genres = movie['genres'].replace("|", ", ")
+
+                good_rated_movies.append({
+                    'id': movie_id,
+                    'title': movie['title'],
+                    'genres': movie_genres,
+                    'avgRating': round(movie['rating'], 1)
+                })
 
     random_movies = random.choices(good_rated_movies, k=6)
 
@@ -39,7 +66,8 @@ def index(request):
             "index.html",
             {
                 #'movies_title': movies_title,
-                'random_movies': random_movies
+                'random_movies': random_movies,
+                'welcome_recomm_title': welcome_recomm_title
             }
         )
 
@@ -47,25 +75,23 @@ def index(request):
 def search(request):
     query = request.GET.get('q', '')
 
-    if query is '':
+    if query == '':
         return JsonResponse([], safe=False)
 
     movie_results = []
 
-    for movie_object in movie_metadata.metadata:
-        movie = movie_object['movielens']
-        movie_genres = ""
-
-        for genre in movie['genres']:
-            movie_genres += genre + ' | '
+    for movie_object in movie_metadata.movies_df.iterrows():
+        movie = movie_object[1]
+        movie_genres = movie['genres'].replace("|", ", ")
 
         if re.search(query, movie['title'], re.IGNORECASE):
             movie_results.append({
-                'id': movie_object['movielensId'],
+                'id': movie['Id'],
                 'title': movie['title'],
-                'genres': movie_genres[:-2],
-                'avgRating': round(movie['avgRating'], 1),
-                'numRatings': movie['numRatings']
+                'genres': movie_genres,
+                'avgRating': round(movie['rating'], 1),
+                # todo
+                #'numRatings': movie['numRatings']
             })
 
         if len(movie_results) >= 10:
@@ -111,19 +137,18 @@ def poster(request, movie_id):
 
 
 def similarmovies(request, movie_id):
-    movie_title = movie_metadata.movies_df[movie_metadata.movies_df['movieId'] == movie_id]['title'].values[0]
+    movie_title = movie_metadata.movies_df[movie_metadata.movies_df['Id'] == movie_id]['title'].values[0]
 
-    main_obj = Main()
-    results = main_obj.title(movie_title)
-    #recom = obj.title("Men in Black (a.k.a. MIB) (1997)")
+    results = recommendations(movie_title)
 
     # {movieId : {title, genres, avgRating, numRatings}}
     result_dict = {}
 
     for result_key, result_titles in results.items():
+        result_key = result_key.split("/")[2].split("_")[1]
         result_dict[result_key] = {}
         for title in result_titles:
-            result_mid = int(movie_metadata.movies_df[movie_metadata.movies_df['title'] == title]['movieId'].values[0])
+            result_mid = int(movie_metadata.movies_df[movie_metadata.movies_df['title'] == title]['Id'].values[0])
             result_dict[result_key][result_mid] = {'title': title}
 
     for movie_object in movie_metadata.metadata:
@@ -158,17 +183,6 @@ def similarmovies(request, movie_id):
                     'numRatings': movie['numRatings']
                 })
 
-
-        # elif movie_object['movielensId'] in result_dict:
-        #     movie = movie_object['movielens']
-        #
-        #     result_dict[movie_object['movielensId']].update({
-        #         'genres' : movie['genres'],
-        #         'avgRating' : round(movie['avgRating'], 1),
-        #         'numRatings' : movie['numRatings']
-        #     })
-
-
     return render(
         request,
         "details.html",
@@ -177,3 +191,44 @@ def similarmovies(request, movie_id):
             'result_dict': result_dict
         }
     )
+
+def personal(request):
+    all_movie_genres = {}
+
+    for movie_object in movie_metadata.movies_df.iterrows():
+        movie = movie_object[1]
+        movie_genres = movie['genres'].split("|")
+
+        for genre in movie_genres:
+            if not genre in all_movie_genres:
+                all_movie_genres[genre] = False
+
+    my_keys = list(all_movie_genres.keys())
+    my_keys.sort()
+    all_movie_genres = {i: all_movie_genres[i] for i in my_keys}
+    del all_movie_genres['(no genres listed)']
+
+    if 'genres' in request.COOKIES:
+        cleaned_cookies = re.sub(r"['\[\]\s+]", "", request.COOKIES['genres'])
+        cookies_list = cleaned_cookies.split(",")
+        if not cleaned_cookies == "":
+            for genre in cookies_list:
+                all_movie_genres[genre] = True
+
+    return render(
+        request,
+        "personal.html",
+        {
+            'genres': all_movie_genres
+        }
+    )
+
+def change_preferences(request):
+    selected_values = request.POST.getlist('genre')
+
+    response = redirect(
+        '/project_test'
+    )
+    response.set_cookie('genres', selected_values)
+    return response
+

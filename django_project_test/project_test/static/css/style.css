@@ -32,6 +32,12 @@
     text-transform: uppercase;
     font-weight: lighter;
 }
+.logo__text:hover {
+    color: #ff5860;
+}
+.logo__text i {
+    margin-right: 5px;
+}
 
 /* search bar - start */
 .search-bar {
@@ -41,7 +47,7 @@
     margin-bottom: 0;
 }
 .search-bar label svg {
-    color: #ff5680;
+    color: #ff5860;
 }
 /* search bar - end */
 
@@ -80,6 +86,16 @@
     padding-left: 5px;
 }
 /* search result list - end */
+
+/* heading cards - start */
+.header-a {
+    color: #ffffff;
+    margin-left: 10px;
+}
+.header-a:hover {
+    color: #ff5860;
+}
+/* heading cards - end */
 
 /* card design - start */
 .card {
@@ -164,5 +180,19 @@
 }
 .comments__rate span:first-child i {
   margin-right: 6px;
-  color: #ff5680;
+  color: #ff5860;
+}
+
+#icon-arrow {
+    margin: 0 5px 0 5px;
+    font-size: smaller;
+}
+
+/* ------------------------- */
+/* ----- personal page ----- */
+/* ------------------------- */
+.personal-title {
+    color: #ffffff;
+    font-size: x-large;
+    padding-bottom: 25px;
 }

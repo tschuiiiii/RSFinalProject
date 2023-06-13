@@ -157,7 +157,7 @@ $(document).ready(function () {
 	Morelines
 	==============================*/
 	$('.card__description--details').moreLines({
-		linecount: 6,
+		linecount: 4,
 		baseclass: 'b-description',
 		basejsclass: 'js-description',
 		classspecific: '_readmore',
