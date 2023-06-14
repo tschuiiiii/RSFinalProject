@@ -169,7 +169,7 @@ Movie details
                                         <img src="{% url 'project_test:poster' movieId %}" alt="{{movie_values.title}}">
                                     </div>
                                     <div class="card__content">
-                                        <h3 class="card__title"><a href="#">{{movie_values.title}}</a></h3>
+                                        <h3 class="card__title"><a href="/project_test/similarmovies/{{movieId}}" data-toggle="tooltip" data-placement="top" title="{{ movie_values.title }}">{{movie_values.title}}</a></h3>
                                         <span class="card__category">
                                             {% for genre in movie_values.genres %}
                                             <span class="style-as-a">{{genre}}</span>

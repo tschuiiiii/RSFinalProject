@@ -22,7 +22,7 @@ def index(request):
         if cleaned_cookies == "":
             welcome_recomm_title = "Top rated movies"
         else:
-            cookies_set = set((cleaned_cookies).split(","))
+            cookies_set = set((cleaned_cookies.lower()).split(","))
             cookies_empty = False
             welcome_recomm_title = "Prefered genres"
     else:
@@ -34,12 +34,13 @@ def index(request):
         movie = movie_object[1]
         movie_id = movie['Id']
 
-        genres_set = set(movie['genres'].split("|"))
+        genres_set = set((movie['genres'].lower()).split(" "))
 
         if not cookies_empty and len(cookies_set.intersection(genres_set)) > 0:
             if movie['rating'] >= 4:
 
-                movie_genres = movie['genres'].replace("|", ", ")
+                separated_genres = movie['genres'].replace(" ", ", ")
+                movie_genres = re.sub('(^|[,])\s*([a-zA-Z])', lambda p: p.group(0).upper(), separated_genres)
 
                 good_rated_movies.append({
                     'id': movie_id,

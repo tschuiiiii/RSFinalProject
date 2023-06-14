@@ -36,7 +36,6 @@ autocomplete({
               <div class="search-movie-avgRating">
                 <span class="card__rate"><i class="icon ion-ios-star"></i></span>
                 <span>${item.avgRating}</span>
-                <span>(${item.numRatings})</span>
               </div>
           </div>`;
         },

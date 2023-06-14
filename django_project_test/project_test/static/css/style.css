@@ -1,10 +1,28 @@
-/* ------------------------ */
-/* ----- welcome page ----- */
-/* ------------------------ */
+/* ------------------------- */
+/* ----- general style ----- */
+/* ------------------------- */
+.tooltip.bs-tooltip-top {
+    color: white;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 5px;
+    top: -13px !important;
+    left: 5px !important;
+    padding: 5px;
+}
+.tooltip.bs-tooltip-top::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 20%;
+  margin-left: -15px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
 .home {
     margin-top: 0 !important;
-    padding-top: 30px !important;
-    padding-bottom: 0px !important;
 }
 
 /* header */
@@ -26,6 +44,10 @@
     margin-left: 5px;
 }
 
+/* ------------------------ */
+/* ----- welcome page ----- */
+/* ------------------------ */
+
 .logo__text {
     color: white;
     margin: 5px;
@@ -40,8 +62,15 @@
 }
 
 /* search bar - start */
-.search-bar {
-    padding: 80px 50px 55px 50px;
+@media (max-width: 1979px) {
+    .search-bar {
+        padding: 80px 50px 55px 50px;
+    }
+}
+@media (min-width: 1980px) {
+    .search-bar {
+        padding: 260px 50px 260px 50px;
+    }
 }
 .search-bar label {
     margin-bottom: 0;
