@@ -30,12 +30,9 @@ class ProjectTestConfig(AppConfig):
 
         print('Start reading txt-file')
         try:
-            # movie_metadata.movies_df = pd.read_csv('project_test/movies.csv', low_memory=False)
-            # TODO: sample dataset of Faisal
-            movie_metadata.movies_df = pd.read_csv("project_test/cleanDataV1.txt", sep="\t")
-            pass
+            movie_metadata.movies_df = pd.read_csv("project_test/latestMovies.txt", sep="\t")
         except FileNotFoundError:
             # print('File project_test/movies.csv does not exist')
-            print('File project_test/cleanDataV1.txt does not exist')
+            print('File project_test/latestMovies.txt does not exist')
             sys.exit()
         print('Finished txt-file!')

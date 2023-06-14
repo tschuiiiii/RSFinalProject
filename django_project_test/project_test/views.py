@@ -198,16 +198,17 @@ def personal(request):
 
     for movie_object in movie_metadata.movies_df.iterrows():
         movie = movie_object[1]
-        movie_genres = movie['genres'].split("|")
+        movie_genres = movie['genres'].split(" ")
 
         for genre in movie_genres:
             if not genre in all_movie_genres:
-                all_movie_genres[genre] = False
+                cap_genre = genre.capitalize()
+                all_movie_genres[cap_genre] = False
 
     my_keys = list(all_movie_genres.keys())
     my_keys.sort()
     all_movie_genres = {i: all_movie_genres[i] for i in my_keys}
-    del all_movie_genres['(no genres listed)']
+    #del all_movie_genres['(no genres listed)']
 
     if 'genres' in request.COOKIES:
         cleaned_cookies = re.sub(r"['\[\]\s+]", "", request.COOKIES['genres'])
