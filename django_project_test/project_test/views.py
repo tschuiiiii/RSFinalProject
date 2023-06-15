@@ -10,6 +10,13 @@ from .WebsiteRecommendations import recommendations
 import re
 import requests
 
+lookup_dict = {
+    'project_test/similarity/func2_Reviews': 'The recommendations of TF-IDF model based on movies\' reviews',
+    'project_test/similarity/func3_Others': 'The recommendations of TF-IDF model based on movies\' titles, keywords and other information',
+    'project_test/similarity/func4_DL-Summary': 'The recommendations by Glove embedding based on movies\' summary',
+    'project_test/similarity/func8_BERT-Review': 'The recommendations of BERT model based on movies\' reviews',
+    'project_test/similarity/func9_BERT-Summary-Reviews': 'The recommendations of BERT model based on movies\' titles, keywords and other information'
+    }
 
 # Create your views here.
 def index(request):
@@ -139,18 +146,23 @@ def poster(request, movie_id):
 
 def similarmovies(request, movie_id):
     movie_title = movie_metadata.movies_df[movie_metadata.movies_df['Id'] == movie_id]['title'].values[0]
+    recom = recommendations(movie_title)
 
-    results = recommendations(movie_title)
+    recommendation = dict()
+    for function, movies in recom.items():
+        recommendation[function] = dict()
+        for movie in movies:
+            id = movie_metadata.movies_df.loc[movie_metadata.movies_df['title'] == movie, 'Id'].iloc[0]
+            m_genres = movie_metadata.movies_df.loc[movie_metadata.movies_df['title'] == movie, 'genres'].iloc[0]
+            separated_genres = m_genres.replace(" ", ", ")
+            movie_genres = re.sub('(^|[,])\s*([a-zA-Z])', lambda p: p.group(0).upper(), separated_genres)
 
-    # {movieId : {title, genres, avgRating, numRatings}}
-    result_dict = {}
-
-    for result_key, result_titles in results.items():
-        result_key = result_key.split("/")[2].split("_")[1]
-        result_dict[result_key] = {}
-        for title in result_titles:
-            result_mid = int(movie_metadata.movies_df[movie_metadata.movies_df['title'] == title]['Id'].values[0])
-            result_dict[result_key][result_mid] = {'title': title}
+            movie_info = {'title': movie,
+                          'genres': movie_genres,
+                          'avgRating': round(
+                              movie_metadata.movies_df.loc[movie_metadata.movies_df['title'] == movie, 'rating'].iloc[
+                                  0], 1)}
+            recommendation[function][id] = movie_info
 
     for movie_object in movie_metadata.metadata:
         if movie_object['movielensId'] == movie_id:
@@ -174,22 +186,13 @@ def similarmovies(request, movie_id):
                 'title': movie['title']
             }
 
-        for key, value_dict in result_dict.items():
-            if movie_object['movielensId'] in value_dict:
-                movie = movie_object['movielens']
-
-                value_dict[movie_object['movielensId']].update({
-                    'genres': movie['genres'],
-                    'avgRating': round(movie['avgRating'], 1),
-                    'numRatings': movie['numRatings']
-                })
-
     return render(
         request,
         "details.html",
         {
             'movie': movie_details,
-            'result_dict': result_dict
+            'result_dict': recommendation,
+            'lookup_dict': lookup_dict
         }
     )
 
