@@ -32,7 +32,6 @@ class ProjectTestConfig(AppConfig):
         try:
             movie_metadata.movies_df = pd.read_csv("project_test/latestMovies.txt", sep="\t")
         except FileNotFoundError:
-            # print('File project_test/movies.csv does not exist')
             print('File project_test/latestMovies.txt does not exist')
             sys.exit()
         print('Finished txt-file!')

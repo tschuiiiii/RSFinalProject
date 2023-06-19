@@ -164,9 +164,8 @@ Movie details
                         <div class="row">
                             <!-- section title -->
                             <div class="col-12">
-<!--                                <h2 class="section__title">Recommendation List <i class="icon ion-md-arrow-dropright" id="icon-arrow"></i> {{key}}</h2>-->
                                 {% for lookup_key, lookup_value in lookup_dict.items %}
-                                    {% if lookup_key == key %}}
+                                    {% if lookup_key == key %}
                                     <h3 class="section__title">{{ lookup_value }}</h3>
                                     {% endif %}
                                 {% endfor %}
@@ -184,9 +183,6 @@ Movie details
                                     <div class="card__content">
                                         <h3 class="card__title"><a href="/project_test/similarmovies/{{movieId}}" data-toggle="tooltip" data-placement="top" title="{{ movie_values.title }}">{{movie_values.title}}</a></h3>
                                         <span class="card__category">
-<!--                                            {% for genre in movie_values.genres %}-->
-<!--                                            <span class="style-as-a">{{genre}}</span>-->
-<!--                                            {% endfor %}-->
                                             <span class="style-as-a">{{movie_values.genres}}</span>
                                         </span>
                                         <span class="card__rate"><i class="icon ion-ios-star"></i>{{movie_values.avgRating}}</span>
@@ -209,7 +205,6 @@ Movie details
                                         <li class="reviews__item">
                                             <div class="comments__actions">
                                                 <div class="comments__rate">
-                                                    <!--														<button><i class="icon ion-ios-chatbubbles"></i>8</button>-->
                                                     <span><i class="icon ion-ios-chatbubbles"></i>Review #{{forloop.counter}}</span>
                                                 </div>
                                             </div>
